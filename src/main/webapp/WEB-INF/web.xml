@@ -3,36 +3,36 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
 
-  <!--加入springmvc支持-->
-  <!--前端控制器-->
-  <servlet>
-    <servlet-name>RedisVisualization</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:springMVC.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+    <!--加入springmvc支持-->
+    <!--前端控制器-->
+    <servlet>
+        <servlet-name>RedisVisualization</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springMVC.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>RedisVisualization</servlet-name>
-    <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RedisVisualization</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
 
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring/applicationContext.xml</param-value>
-  </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/applicationContext.xml</param-value>
+    </context-param>
 
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
-  <session-config>
-    <session-timeout>120</session-timeout>
-  </session-config>
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
 
 </web-app>

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @ClassName com.summer.graduate.util.RedisUtil
- * @Description TODO
+ * @Description redis工具类，从redis数据库中获取数据
  * @Author summer
  * @Date 2019/3/26 15:16
  * @Version 1.0
@@ -35,6 +35,7 @@ public class RedisUtil {
 
 	/**
 	 * 获取list
+	 *
 	 * @param key
 	 * @param start
 	 * @param end
@@ -51,6 +52,7 @@ public class RedisUtil {
 
 	/**
 	 * 获取list缓存的长度
+	 *
 	 * @param key 键
 	 * @return
 	 */
