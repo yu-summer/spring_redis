@@ -26,7 +26,9 @@
 </div>
 <div>
     <div class="row">
-        <jsp:include page="navigation.jsp"/>
+        <div class="col-md-2">
+            <jsp:include page="navigation.jsp"/>
+        </div>
         <div class="col-md-10 chart" id="charts">
             <div class="row">
                 <div class="col-md-3 scrIP" id="src_ip" style="height: 300px;">

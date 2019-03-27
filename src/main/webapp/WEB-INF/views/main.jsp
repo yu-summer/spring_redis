@@ -50,18 +50,20 @@
     </div>
     <div class="col-md-12">
         <div class="row">
-            <jsp:include page="navigation.jsp"/>
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-12 input-group rule_input" style="height: 33px">
-                        <%--搜索框--%>
-                        <input type="text" class="form-control" name="regex">
-                        <span class="input-group-btn">
+            <div class="col-md-2">
+                <jsp:include page="navigation.jsp"/>
+            </div>
+            <div class="col-md-10 input-group rule_input" style="height: 33px">
+                <%--搜索框--%>
+                <input type="text" class="form-control" name="regex">
+                <span class="input-group-btn">
                             <button class="btn btn-default" type="button" onclick="search()">
                                 Search
                             </button>
                          </span>
-                    </div>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
                     <div class="col-md-3">
                         <div class="row">
                             <%--四个饼形图--%>
