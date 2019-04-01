@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,25 +26,83 @@ public class RulesController {
 	@Autowired
 	private FileOperation fileOperation;
 
+	private String dirPath = "E:\\rules";
+
+	/**
+	 *罗列出所有rules文件
+	 * @return
+	 */
 	@RequestMapping("rulesList.do")
 	@ResponseBody
-	public ModelAndView editRules() {
-		ModelAndView modelAndView = new ModelAndView("rules");
-
+	public ModelAndView rulesList() {
+		ModelAndView modelAndView = new ModelAndView("rulesList");
+		Map<String, Object> resultMap = new HashMap<>();
+		List<String> list = fileOperation.readDir(dirPath);
+		modelAndView.addObject("rules", list);
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "rulesList.do", method = RequestMethod.GET)
+	/**
+	 * 编辑rules文件
+	 * @param fileName
+	 * @return
+	 */
+	@RequestMapping(value = "edit.do", method = RequestMethod.GET)
+	public ModelAndView edit(String fileName) {
+		ModelAndView modelAndView = new ModelAndView("edit");
+		StringBuffer stringBuffer = fileOperation.readFile(dirPath + "\\" + fileName);
+
+		modelAndView.addObject("title", fileName);
+		modelAndView.addObject("text", new String(stringBuffer));
+
+		System.out.println(stringBuffer);
+		return modelAndView;
+	}
+
+	/**
+	 * 删除rules
+	 * @param fileName
+	 * @return
+	 */
+	@RequestMapping(value = "delete.do", method = RequestMethod.GET)
+	public ModelAndView deleteRules(String fileName) {
+		fileOperation.deleteFile(dirPath + "\\" + fileName);
+		ModelAndView modelAndView = new ModelAndView("rulesList");
+		return modelAndView;
+	}
+
+	/**
+	 * 更新rules
+	 * @param fileName
+	 * @return
+	 */
+	@RequestMapping(value = "update.do", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> rulesList() {
-		Map<String, Object> resultMap = new HashMap<>();
-		List<String> list = fileOperation.readDir("E:\\rules");
-		resultMap.put("result", list);
+	public Map<String, String> updateRules(String fileName, StringBuffer content) {
+		String resultMesg = "success";
+		try {
+			fileOperation.writeFile(dirPath + "\\" + fileName, content);
+		} catch (Exception e) {
+			 e.printStackTrace();
+			resultMesg = "error";
+		}
+		Map<String, String> resultMap = new HashMap<>();
+		resultMap.put("result", resultMesg);
 		return resultMap;
 	}
 
-	@RequestMapping("test.do")
-	public void test() {
-		fileOperation.readDir("E:\\rules");
+	@RequestMapping(value = "add.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, String> addRules(String fileName) {
+		String resultMesg = "success";
+		Map<String, String> resultMap = new HashMap<>();
+		try {
+			fileOperation.addRules(dirPath + "\\" + fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+			resultMesg = "error";
+		}
+		resultMap.put("result", resultMesg);
+		return resultMap;
 	}
 }

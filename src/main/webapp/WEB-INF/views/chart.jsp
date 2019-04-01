@@ -22,7 +22,6 @@
 <body>
 <div style="height: 43px; background-color: #1e94f3">
     title
-    <input type="button" value="pdf" onclick="javascrtpt:window.location.href='pdf.do'">
 </div>
 <div>
     <div class="row">
@@ -48,7 +47,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <script type="text/javascript" src="./static/js/echarts.min.js"></script>

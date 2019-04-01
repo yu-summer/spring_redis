@@ -44,97 +44,95 @@
     </style>
 </head>
 <body>
-<div class="row">
-    <div class="col-sm-12" style="height: 43px; background-color: #1e94f3;">
-        title
-    </div>
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-2">
-                <jsp:include page="navigation.jsp"/>
-            </div>
-            <div class="col-md-10 input-group rule_input" style="height: 33px">
-                <%--搜索框--%>
-                <input type="text" class="form-control" name="regex">
-                <span class="input-group-btn">
+<div style="height: 43px; background-color: #1e94f3">
+    title
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-2">
+            <jsp:include page="navigation.jsp"/>
+        </div>
+        <div class="col-md-10 input-group rule_input" style="height: 33px">
+            <%--搜索框--%>
+            <input type="text" class="form-control" name="regex">
+            <span class="input-group-btn">
                             <button class="btn btn-default" type="button" onclick="search()">
                                 Search
                             </button>
                          </span>
-            </div>
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="row">
-                            <%--四个饼形图--%>
-                            <div class="col-md-12 chart" id="src_ip">
-                            </div>
-                            <div class="col-md-12 chart" id="src_port">
-                            </div>
-                            <div class="col-md-12 chart" id="dest_ip">
-                            </div>
-                            <div class="col-md-12 chart" id="dest_port">
-                            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="row">
+                        <%--四个饼形图--%>
+                        <div class="col-md-12 chart" id="src_ip">
+                        </div>
+                        <div class="col-md-12 chart" id="src_port">
+                        </div>
+                        <div class="col-md-12 chart" id="dest_ip">
+                        </div>
+                        <div class="col-md-12 chart" id="dest_port">
                         </div>
                     </div>
-                    <div class="col-md-7 alertType table-responsive">
-                        <!--alert-->
-                        <table class="table">
-                            <thead>
+                </div>
+                <div class="col-md-7 alertType table-responsive">
+                    <!--alert-->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>alert.signature</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${alertType}" var="alert">
                             <tr>
-                                <th>alert.signature</th>
-                                <th>Count</th>
+                                <td>${alert.key}</td>
+                                <td>${alert.value}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${alertType}" var="alert">
-                                <tr>
-                                    <td>${alert.key}</td>
-                                    <td>${alert.value}</td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-2 alertCount">
-                        <%--all alert count--%>
-                        <div data-toggle="modal" data-target="#modal_all">
-                            alert count
-                            <div class="text-center article-title all_log">
-                                <h2>${allCount}</h2>
-                            </div>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-2 alertCount">
+                    <%--all alert count--%>
+                    <div data-toggle="modal" data-target="#modal_all">
+                        alert count
+                        <div class="text-center article-title all_log">
+                            <h2>${allCount}</h2>
                         </div>
                     </div>
-                    <div class="col-md-9 alertLogs table-responsive">
-                        <!--all alert logs-->
-                        <hr>
-                        <table class="table">
-                            <thead>
+                </div>
+                <div class="col-md-9 alertLogs table-responsive">
+                    <!--all alert logs-->
+                    <hr>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>alert.signature</th>
+                            <th>src_ip</th>
+                            <th>src_port</th>
+                            <th>dest_ip</th>
+                            <th>dest_port</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${top20Logs}" var="log">
                             <tr>
-                                <th>Time</th>
-                                <th>alert.signature</th>
-                                <th>src_ip</th>
-                                <th>src_port</th>
-                                <th>dest_ip</th>
-                                <th>dest_port</th>
+                                <td>${log.get("timestamp")}</td>
+                                <td style="display: none">${log.get("alert")}</td>
+                                <td data-toggle="modal"
+                                    data-target="#alertModal">${log.get("alert").get("signature")}</td>
+                                <td>${log.get("src_ip")}</td>
+                                <td>${log.get("src_port")}</td>
+                                <td>${log.get("dest_ip")}</td>
+                                <td>${log.get("dest_port")}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${top20Logs}" var="log">
-                                <tr>
-                                    <td>${log.get("timestamp")}</td>
-                                    <td style="display: none">${log.get("alert")}</td>
-                                    <td data-toggle="modal"
-                                        data-target="#alertModal">${log.get("alert").get("signature")}</td>
-                                    <td>${log.get("src_ip")}</td>
-                                    <td>${log.get("src_port")}</td>
-                                    <td>${log.get("dest_ip")}</td>
-                                    <td>${log.get("dest_port")}</td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

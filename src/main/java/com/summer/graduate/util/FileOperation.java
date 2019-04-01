@@ -1,5 +1,6 @@
 package com.summer.graduate.util;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -17,10 +18,11 @@ import java.util.List;
 public class FileOperation {
 	/**
 	 * 读文件
+	 *
 	 * @param filePath
 	 * @return
 	 */
-	private static StringBuffer readFile(String filePath) {
+	public StringBuffer readFile(String filePath) {
 		StringBuffer stringBuffer = new StringBuffer();
 		String pathname = filePath;
 		try (FileReader reader = new FileReader(pathname);
@@ -39,10 +41,10 @@ public class FileOperation {
 
 	/**
 	 * 写入文件
+	 *
 	 * @param filePath
 	 */
-	public static void writeFile(String filePath) {
-		StringBuffer content = readFile("E:\\demo\\1.txt");
+	public void writeFile(String filePath, StringBuffer content) {
 		try {
 			File writeName = new File(filePath);
 			try (FileWriter writer = new FileWriter(writeName);
@@ -57,6 +59,32 @@ public class FileOperation {
 
 		System.out.println("Done....");
 	}
+
+	/**
+	 * 删除rules文件
+	 * @param filePath
+	 * @return
+	 */
+	public Boolean deleteFile(String filePath) {
+		File file = new File(filePath);
+		if (!file.exists()) {
+			System.out.println("删除文件失败:" + filePath + "不存在！");
+			return false;
+		} else {
+			return file.delete();
+		}
+	}
+
+	public Boolean addRules(String fileName) throws IOException {
+		boolean flag = false;
+		File filename = new File(fileName);
+		if (!filename.exists()) {
+			filename.createNewFile();
+			flag = true;
+		}
+		return flag;
+	}
+
 
 	public List<String> readDir(String filePath) {
 		File file = new File(filePath);
