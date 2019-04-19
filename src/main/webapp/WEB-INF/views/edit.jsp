@@ -14,9 +14,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div style="height: 43px; background-color: #1e94f3;">
-    title
-</div>
+<jsp:include page="title.jsp"/>
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -27,7 +25,8 @@
                 <div>
                     <h3 style="float: left" id="fileName">${title}</h3>
                     <div style="float: right ;text-align:right">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">新增</button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">新增
+                        </button>
                         <button type="button" class="btn btn-warning" id="update">修改</button>
                         <button type="button" class="btn btn-danger" id="delete">删除</button>
                         <button type="button" class="btn btn-primary" disabled="disabled" id="finish">提交</button>
@@ -42,15 +41,15 @@
         <div class="modal-dialog">
             <div class="modal-content" style="width: 350px">
                 <div class="modal-body">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="fileName2" class="label-padding">文件名:</label>
-                                <input type="text" id="fileName2" name="fileName2" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <a id="btn1" class="btn btn-primary">OK</a>
-                            </div>
-                        </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="fileName2" class="label-padding">文件名:</label>
+                            <input type="text" id="fileName2" name="fileName2" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <a id="btn1" class="btn btn-primary">OK</a>
+                        </div>
+                    </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -101,7 +100,7 @@
                 data: rule,
                 dataType: 'json',
                 success: function (result) {
-                    if(result.result === 'success') {
+                    if (result.result === 'success') {
                         window.location.href = "edit.do?fileName=" + fileName;
                     }
                 }

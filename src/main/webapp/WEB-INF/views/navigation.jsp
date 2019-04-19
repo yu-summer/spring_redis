@@ -15,7 +15,7 @@
             <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>Dashboard</span><i
                     class="my-icon nav-more"></i></a>
             <ul>
-                <li><a href="index.do"><span>Home</span></a></li>
+                <li><a href="main.do"><span>Home</span></a></li>
                 <li><a href="chart.do;"><span>Chart</span></a></li>
             </ul>
         </li>
@@ -24,7 +24,14 @@
                     class="my-icon nav-more"></i></a>
             <ul id="rules">
                 <li><a href="rulesList.do"><span>list</span></a></li>
-                <li><a href="" id="add"><span>add</span></a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:;"><i class="my-icon nav-icon icon_2"></i><span>Redis</span><i
+                    class="my-icon nav-more"></i></a>
+            <ul id="redis">
+                <li><a href="redisMonitor.do"><span>Monitor</span></a></li>
+                <li><a href="command.do" id="command"><span>command</span></a></li>
             </ul>
         </li>
         <li class="nav-item">

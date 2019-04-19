@@ -44,9 +44,7 @@
     </style>
 </head>
 <body>
-<div style="height: 43px; background-color: #1e94f3">
-    title
-</div>
+<jsp:include page="title.jsp"/>
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -56,10 +54,10 @@
             <%--搜索框--%>
             <input type="text" class="form-control" name="regex">
             <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="search()">
-                                Search
-                            </button>
-                         </span>
+                <button class="btn btn-default" type="button" onclick="search()">
+                    Search
+                </button>
+            </span>
         </div>
         <div class="col-md-10">
             <div class="row">
@@ -121,14 +119,14 @@
                         <tbody>
                         <c:forEach items="${top20Logs}" var="log">
                             <tr>
-                                <td>${log.get("timestamp")}</td>
-                                <td style="display: none">${log.get("alert")}</td>
+                                <td>${log.timestamp}</td>
+                                <td style="display: none">${log.alert}</td>
                                 <td data-toggle="modal"
-                                    data-target="#alertModal">${log.get("alert").get("signature")}</td>
-                                <td>${log.get("src_ip")}</td>
-                                <td>${log.get("src_port")}</td>
-                                <td>${log.get("dest_ip")}</td>
-                                <td>${log.get("dest_port")}</td>
+                                    data-target="#alertModal">${log.alert.signature}</td>
+                                <td>${log.src_ip}</td>
+                                <td>${log.src_port}</td>
+                                <td>${log.dest_ip}</td>
+                                <td>${log.dest_port}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -323,7 +321,7 @@
         option = null;
         option = {
             title: {
-                text: 'Top 20 scrip',
+                text: 'Top 20 destPort',
                 x: 'left',
                 textStyle: {
                     fontSize: '10'
@@ -392,6 +390,8 @@
         alert(content);
         modal.find(".content").val(content);
     });
+
+    
 </script>
 </body>
 </html>

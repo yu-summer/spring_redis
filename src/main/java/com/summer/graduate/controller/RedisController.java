@@ -1,105 +1,68 @@
 package com.summer.graduate.controller;
 
-import com.summer.graduate.service.DataCollationImpl;
+import com.google.gson.Gson;
+import com.summer.graduate.entities.Operate;
+import com.summer.graduate.entities.RedisInfoDetail;
+import com.summer.graduate.loginInterceptor.IsCheckUserLogin;
+import com.summer.graduate.service.impl.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName com.summer.graduate.controller.RedisController
  * @Description TODO
  * @Author summer
- * @Date 2019/3/26 15:23
+ * @Date 2019/4/11 11:52
  * @Version 1.0
  **/
 @Controller
 public class RedisController {
 	@Autowired
-	private DataCollationImpl dataCollation;
+	private RedisService redisService;
 
-	Map<String, Object> dataResult = null;    //显示的数据
-
-	/**
-	 * 跳转主页面
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "index.do")
-	public ModelAndView toIndex() {
-		dataResult = dataCollation.dataResult();
-		ModelAndView modelAndView = setData();
-		modelAndView.setViewName("main");
-		modelAndView.addObject("top20Logs", dataResult.get("fin_allLogs"));
-		modelAndView.addObject("allCount", dataResult.get("allCount"));
-		modelAndView.addObject("alertType", dataResult.get("alertType"));
-
-		return modelAndView;
+	//跳转到监控页面
+	@IsCheckUserLogin(check = true)
+	@RequestMapping(value="redisMonitor.do")
+	public String redisMonitor(Model model) {
+		//获取redis的info
+		List<RedisInfoDetail> ridList = redisService.getRedisInfo();
+		//获取redis的日志记录
+		List<Operate> logList = redisService.getLogs(1000);
+		//获取日志总数
+		long logLen = redisService.getLogLen();
+		model.addAttribute("infoList", ridList);
+		model.addAttribute("logList", logList);
+		model.addAttribute("logLen", logLen);
+		return "redisMonitor";
+	}
+	//清空日志按钮
+	@RequestMapping(value="logEmpty.do")
+	@ResponseBody
+	public String logEmpty(){
+		return redisService.logEmpty();
 	}
 
-	@RequestMapping("chart.do")
-	public ModelAndView toChart() {
-		ModelAndView modelAndView = setData();
-		modelAndView.setViewName("chart");
-		return modelAndView;
+	//获取当前数据库中key的数量
+	@RequestMapping(value="getKeysSize.do")
+	@ResponseBody
+	public String getKeysSize(){
+		return new Gson().toJson(redisService.getKeysSize());
 	}
 
-	@RequestMapping("pdf.do")
-	public ModelAndView toPDF() {
-		ModelAndView modelAndView = setData();
-		modelAndView.setViewName("pdf");
-		modelAndView.addObject("top20Logs", dataResult.get("fin_allLogs"));
-		modelAndView.addObject("allCount", dataResult.get("allCount"));
-		modelAndView.addObject("alertType", dataResult.get("alertType"));
-		return modelAndView;
+	//获取当前数据库内存使用大小情况
+	@RequestMapping(value="getMemeryInfo.do")
+	@ResponseBody
+	public String getMemeryInfo(){
+		return new Gson().toJson(redisService.getMemeryInfo());
 	}
 
-	/**
-	 * 将数据转化为图表需要的数据格式
-	 *
-	 * @return
-	 */
-	private static List<String> transformData(Map<String, Integer> map) {
-		List<String> result = new ArrayList<>();
-		for (Map.Entry<String, Integer> entry : map.entrySet()) {
-			result.add("{value: " + entry.getValue() + ", name: " + entry.getKey() + "}");
-		}
-		return result;
-	}
-
-	/**
-	 * 填充数据
-	 *
-	 * @return
-	 */
-	private ModelAndView setData() {
-		ModelAndView modelAndView = new ModelAndView();
-		Map<String, Integer> log = null;
-
-		//来源ip数据
-		log = (Map<String, Integer>) dataResult.get("fin_srcIP");
-		modelAndView.addObject("top20scrIP_key", log.keySet());
-		modelAndView.addObject("top20scrIP", transformData(log));
-
-		//来源port数据
-		log = (Map<String, Integer>) dataResult.get("fin_srcPort");
-		modelAndView.addObject("top20scrPort_key", log.keySet());
-		modelAndView.addObject("top20scrPort", transformData(log));
-
-		//目的IP数据
-		log = (Map<String, Integer>) dataResult.get("fin_descIP");
-		modelAndView.addObject("top20descIP_key", log.keySet());
-		modelAndView.addObject("top20descIP", transformData(log));
-
-		//目的port数据
-		log = (Map<String, Integer>) dataResult.get("fin_descPort");
-		modelAndView.addObject("top20descPort_key", log.keySet());
-		modelAndView.addObject("top20descPort", transformData(log));
-
-		return modelAndView;
+	@RequestMapping(value="command.do")
+	public String command() {
+		return "command";
 	}
 }

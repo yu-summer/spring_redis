@@ -20,9 +20,7 @@
     </style>
 </head>
 <body>
-<div style="height: 43px; background-color: #1e94f3">
-    title
-</div>
+<jsp:include page="title.jsp"/>
 <div>
     <div class="row">
         <div class="col-md-2">
@@ -221,7 +219,7 @@
         option = null;
         option = {
             title: {
-                text: 'Top 20 scrip',
+                text: 'Top 20 destPort',
                 x: 'left',
                 textStyle: {
                     fontSize: '10'

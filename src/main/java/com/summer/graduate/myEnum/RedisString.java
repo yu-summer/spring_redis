@@ -1,0 +1,6 @@
+package com.summer.graduate.myEnum;
+
+public enum RedisString {
+	SET, GET, GETRANGE, GETSET, GETBIT, MGET, SETBIT, SETEX, SETNX, STRLEN, MSET, MSETNX, PSETEX, INCR, INCRBY, INCRBYFLOAT,
+	DECR, DECRBY, APPEND
+}

@@ -15,9 +15,7 @@
     <script src="./static/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div style="height: 43px; background-color: #1e94f3">
-    title
-</div>
+<jsp:include page="title.jsp"/>
 <div>
     <div class="row">
         <div class="col-md-2">

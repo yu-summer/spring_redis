@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 导入properties属性文件 -->
-    <context:property-placeholder location="classpath:properties/redis.properties"/>
+    <context:property-placeholder location="classpath:properties/redis.properties" ignore-unresolvable="true"/>
     <!--自动扫描com.summer.springmvc包下的beans-->
     <context:component-scan base-package="com.summer.graduate"/>
 
@@ -15,6 +15,14 @@
         <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
         <property name="blockWhenExhausted" value="${redis.blockWhenExhausted}"/>
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="poolConfig" />
+        <constructor-arg name="host" value="${redis.host}" />
+        <constructor-arg name="port" value="${redis.port}" type="int" />
+        <constructor-arg name="timeout" value="${redis.timeout}" type="int" />
+        <constructor-arg name="password" value="${redis.password}" />
     </bean>
 
     <!-- redis服务器中心 -->
@@ -30,7 +38,7 @@
         <property name="valueSerializer" ref="stringRedisSerializer"/>
     </bean>
 
-    <bean id="redisUtil" class="com.summer.graduate.util.RedisUtil">
+    <bean id="logUtil" class="com.summer.graduate.util.LogUtil">
         <property name="redisTemplate" ref="redisTemplate"/>
     </bean>
 </beans>

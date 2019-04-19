@@ -1,6 +1,5 @@
 package com.summer.graduate.util;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -62,6 +61,7 @@ public class FileOperation {
 
 	/**
 	 * 删除rules文件
+	 *
 	 * @param filePath
 	 * @return
 	 */

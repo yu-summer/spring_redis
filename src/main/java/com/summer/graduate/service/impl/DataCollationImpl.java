@@ -1,15 +1,17 @@
-package com.summer.graduate.service;
+package com.summer.graduate.service.impl;
 
 import com.summer.graduate.Comparators.MapValueComparator;
-import com.summer.graduate.util.RedisUtil;
-import org.json.JSONObject;
+import com.summer.graduate.entities.Alert;
+import com.summer.graduate.entities.RedisLog;
+import com.summer.graduate.util.GsonUtil;
+import com.summer.graduate.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /**
- * @ClassName com.summer.graduate.service.impl.DataCollationImpl
+ * @ClassName DataCollationImpl
  * @Description TODO
  * @Author summer
  * @Date 2019/3/26 17:56
@@ -18,8 +20,10 @@ import java.util.*;
 @Service
 public class DataCollationImpl {
 	@Autowired
-	private RedisUtil redisUtil;
+	private LogUtil redisUtil;
 
+	@Autowired
+	private GsonUtil gsonUtil;
 
 	public Map<String, Object> dataResult() {
 		List<String> lrange = (List<String>) (List) redisUtil.lGet("log", 0, redisUtil.lGetListSize("log"));
@@ -35,13 +39,13 @@ public class DataCollationImpl {
 		//存放目的alert
 		Map<Object, Integer> alert = new HashMap<>();
 
-		List<JSONObject> allLogs = new ArrayList<>();
+		List<RedisLog> allLogs = new ArrayList<>();
 
 		for (String log : lrange) {
-			JSONObject jsonObject = new JSONObject(log);
+			RedisLog redisLog = gsonUtil.jsonToBean(log);
 			//放入来源ip
-			if (jsonObject.has("src_ip")) {
-				String ip = jsonObject.getString("src_ip");
+			if (redisLog.getSrc_ip() != null) {
+				String ip = redisLog.getSrc_ip();
 				if (!srcIP.containsKey(ip)) {
 					srcIP.put(ip, 1);
 				} else {
@@ -49,8 +53,8 @@ public class DataCollationImpl {
 				}
 			}
 			//放入来源port
-			if (jsonObject.has("src_port")) {
-				String port = jsonObject.get("src_port").toString();
+			if (redisLog.getSrc_port() != null) {
+				String port = redisLog.getSrc_port();
 				if (!srcPort.containsKey(port)) {
 					srcPort.put(port, 1);
 				} else {
@@ -58,8 +62,8 @@ public class DataCollationImpl {
 				}
 			}
 			//放入目的ip
-			if (jsonObject.has("dest_ip")) {
-				String ip = jsonObject.getString("dest_ip");
+			if (redisLog.getDest_ip() != null) {
+				String ip = redisLog.getDest_ip();
 				if (!destIP.containsKey(ip)) {
 					destIP.put(ip, 1);
 				} else {
@@ -67,8 +71,8 @@ public class DataCollationImpl {
 				}
 			}
 			//放入目的port
-			if (jsonObject.has("dest_port")) {
-				String port = jsonObject.get("dest_port").toString();
+			if (redisLog.getDest_port() != null) {
+				String port = redisLog.getDest_port();
 				if (!destPort.containsKey(port)) {
 					destPort.put(port, 1);
 				} else {
@@ -77,17 +81,17 @@ public class DataCollationImpl {
 			}
 
 			//放入alert
-			if (jsonObject.has("alert")) {
-				if (jsonObject.has("alert")) {
-					JSONObject jsonAlert = new JSONObject(jsonObject.get("alert").toString());
-					//放入alert
-					if (!alert.containsKey(jsonAlert.get("signature"))) {
-						alert.put(jsonAlert.get("signature").toString(), 1);
-					} else {
-						alert.put(jsonAlert.get("signature").toString(), alert.get(jsonAlert.get("signature").toString()) + 1);
-					}
+			if (redisLog.getAlert() != null) {
+
+				Alert alert1 = redisLog.getAlert();
+				//放入alert
+				if (!alert.containsKey(alert1.getSignature())) {
+					alert.put(alert1.getSignature(), 1);
+				} else {
+					alert.put(alert1.getSignature(), alert.get(alert1.getSignature()) + 1);
 				}
-				allLogs.add(jsonObject);
+
+				allLogs.add(redisLog);
 			}
 
 		}
@@ -99,7 +103,7 @@ public class DataCollationImpl {
 
 		Map<String, Object> resultMap = new HashMap<>();
 
-		resultMap.put("fin_allLogs", allLogs);
+		resultMap.put("fin_allLogs", allLogs);           //所有存在警告的日志
 		resultMap.put("fin_srcIP", getTop20(srcIP2));
 		resultMap.put("fin_srcPort", getTop20(srcPort2));
 		resultMap.put("fin_descIP", getTop20(descIP2));

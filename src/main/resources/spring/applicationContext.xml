@@ -9,4 +9,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <context:component-scan base-package="com.summer.graduate"/>
     <!-- 导入redis的配置文件 -->
     <import resource="redis-config.xml"/>
+    <import resource="jdbc-config.xml"/>
 </beans>

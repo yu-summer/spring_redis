@@ -1,5 +1,6 @@
 package com.summer.graduate.controller;
 
+import com.summer.graduate.loginInterceptor.IsCheckUserLogin;
 import com.summer.graduate.util.FileOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,11 @@ public class RulesController {
 	private String dirPath = "E:\\rules";
 
 	/**
-	 *罗列出所有rules文件
+	 * 罗列出所有rules文件
+	 *
 	 * @return
 	 */
+	@IsCheckUserLogin(check = true)
 	@RequestMapping("rulesList.do")
 	@ResponseBody
 	public ModelAndView rulesList() {
@@ -44,9 +47,11 @@ public class RulesController {
 
 	/**
 	 * 编辑rules文件
+	 *
 	 * @param fileName
 	 * @return
 	 */
+	@IsCheckUserLogin(check = true)
 	@RequestMapping(value = "edit.do", method = RequestMethod.GET)
 	public ModelAndView edit(String fileName) {
 		ModelAndView modelAndView = new ModelAndView("edit");
@@ -61,9 +66,11 @@ public class RulesController {
 
 	/**
 	 * 删除rules
+	 *
 	 * @param fileName
 	 * @return
 	 */
+	@IsCheckUserLogin(check = true)
 	@RequestMapping(value = "delete.do", method = RequestMethod.GET)
 	public ModelAndView deleteRules(String fileName) {
 		fileOperation.deleteFile(dirPath + "\\" + fileName);
@@ -73,9 +80,11 @@ public class RulesController {
 
 	/**
 	 * 更新rules
+	 *
 	 * @param fileName
 	 * @return
 	 */
+	@IsCheckUserLogin(check = true)
 	@RequestMapping(value = "update.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> updateRules(String fileName, StringBuffer content) {
@@ -83,7 +92,7 @@ public class RulesController {
 		try {
 			fileOperation.writeFile(dirPath + "\\" + fileName, content);
 		} catch (Exception e) {
-			 e.printStackTrace();
+			e.printStackTrace();
 			resultMesg = "error";
 		}
 		Map<String, String> resultMap = new HashMap<>();
@@ -91,6 +100,7 @@ public class RulesController {
 		return resultMap;
 	}
 
+	@IsCheckUserLogin(check = true)
 	@RequestMapping(value = "add.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> addRules(String fileName) {
